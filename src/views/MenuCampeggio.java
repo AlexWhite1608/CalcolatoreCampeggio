@@ -1,4 +1,9 @@
 package views;
 
-public class MenuCampeggio {
+import javax.swing.*;
+
+public class MenuCampeggio extends JPanel {
+    public MenuCampeggio() {
+        setVisible(true);
+    }
 }

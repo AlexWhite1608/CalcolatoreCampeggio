@@ -1,4 +1,9 @@
 package views;
 
-public class MenuMargherita {
+import javax.swing.*;
+
+public class MenuMargherita extends JPanel {
+    public MenuMargherita() {
+        setVisible(true);
+    }
 }
