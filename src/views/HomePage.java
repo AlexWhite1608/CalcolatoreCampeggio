@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.*;
+import java.net.URL;
 import javax.swing.*;
 
 public class HomePage extends JFrame{
@@ -31,5 +32,6 @@ public class HomePage extends JFrame{
         this.setSize(450, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+
     }
 }
