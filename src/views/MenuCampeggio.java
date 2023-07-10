@@ -9,4 +9,5 @@ public class MenuCampeggio extends JPanel {
         setVisible(true);
         this.add(MainPanel);
     }
+
 }
