@@ -26,6 +26,7 @@ public class MenuCampeggio extends JPanel {
     private JButton btnCalcola;
     private JButton btnCancella;
     private JPanel pnlButtons;
+    private JTextField tfExtra;
 
     public MenuCampeggio() {
         add(mainPanel);
