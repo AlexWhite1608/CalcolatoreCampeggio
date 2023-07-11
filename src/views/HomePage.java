@@ -1,7 +1,6 @@
 package views;
 
 import java.awt.*;
-import java.net.URL;
 import javax.swing.*;
 
 public class HomePage extends JFrame{
@@ -27,9 +26,9 @@ public class HomePage extends JFrame{
 
         //Imposta parametri visualizzazione HomePage
         this.setTitle("Calcolatore prezzi");
-        this.setLocation(750, 180);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setSize(450, 600);
+        this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
