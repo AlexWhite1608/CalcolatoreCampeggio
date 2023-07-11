@@ -23,6 +23,9 @@ public class MenuCampeggio extends JPanel {
     private JLabel totaleConTassaLabel;
     private JLabel extraLabel;
     private JLabel totaleLabel;
+    private JButton btnCalcola;
+    private JButton btnCancella;
+    private JPanel pnlButtons;
 
     public MenuCampeggio() {
         add(mainPanel);
