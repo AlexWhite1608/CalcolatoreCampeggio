@@ -1,6 +1,8 @@
 package views;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanel;
@@ -32,6 +34,17 @@ public class MenuCampeggio extends JPanel {
         add(mainPanel);
         setVisible(true);
 
+        //Button che cancella tutto il form
+        btnCancella.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfNumAdulti.setText("");
+                tfNumBambini.setText("");
+                tfNumAnimali.setText("");
+                tfExtra.setText("");
+                tfNoTax.setText("");
+            }
+        });
     }
 
 }
