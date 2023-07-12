@@ -1,8 +1,16 @@
 package views;
 
+import org.jdatepicker.JDatePicker;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import utils.CustomDateLabelFormatter;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanel;
@@ -29,12 +37,25 @@ public class MenuCampeggio extends JPanel {
     private JButton btnCancella;
     private JPanel pnlButtons;
     private JTextField tfExtra;
+    private JPanel pnDatePickerArrivo;
+    private JPanel pnDatePickerPartenza;
+    private JDatePicker dpArrivo;
+    private JDatePicker dpPartenza;
 
     public MenuCampeggio() {
+
+        //Inizializzazione
+        datePickersInitializer();
+        clearFormInitializer();
+
         add(mainPanel);
+
         setVisible(true);
 
-        //Button che cancella tutto il form
+    }
+
+    //Codice per cancellare tutto il form
+    private void clearFormInitializer(){
         btnCancella.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,6 +66,32 @@ public class MenuCampeggio extends JPanel {
                 tfNoTax.setText("");
             }
         });
+    }
+
+    //Inizializzazione date pickers
+    private void datePickersInitializer(){
+        pnDatePickerArrivo.setLayout(new FlowLayout());
+        pnDatePickerPartenza.setLayout(new FlowLayout());
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        UtilDateModel model = new UtilDateModel();
+
+        JDatePanelImpl datePanelArrivo = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePickerArrivo = new JDatePickerImpl(datePanelArrivo, new CustomDateLabelFormatter());
+
+        JDatePanelImpl datePanelPartenza = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePickerPartenza = new JDatePickerImpl(datePanelPartenza, new CustomDateLabelFormatter());
+
+        pnDatePickerArrivo.add(new JLabel("DIOCANE"));
+        pnDatePickerArrivo.add(datePickerArrivo);
+
+        pnDatePickerPartenza.add(new JLabel("DIOMERDA"));
+        pnDatePickerPartenza.add(datePickerPartenza);
+
+        add(pnDatePickerArrivo);
+        add(pnDatePickerPartenza);
     }
 
 }

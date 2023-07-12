@@ -26,8 +26,8 @@ public class HomePage extends JFrame{
 
         //Imposta parametri visualizzazione HomePage
         this.setTitle("Calcolatore prezzi");
-        this.setSize(550, 400);
         this.setLocationRelativeTo(null);
+        this.pack();
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
