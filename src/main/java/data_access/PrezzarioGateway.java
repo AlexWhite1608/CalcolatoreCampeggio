@@ -1,7 +1,6 @@
 package data_access;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -17,7 +16,7 @@ public class PrezzarioGateway {
 
     }
 
-    private void saveFileToSystem() throws URISyntaxException {
+    private void saveFileToSystem() {
         String userHome = System.getProperty("user.home");
         String documentPath = userHome + File.separator + "Documents" + File.separator + "CalcolatoreCampeggio";
 
@@ -28,21 +27,20 @@ public class PrezzarioGateway {
         }
 
         // Salva il file nella cartella
-        URL resource = getClass().getClassLoader().getResource("Prezzi.csv");
-        if (resource == null) {
-            throw new IllegalArgumentException("File not found!");
-        } else {
-            try {
-                File inputFile = new File(resource.toURI());
-                File outputFile = new File(documentPath, "Prezzi.csv");
+        String inputFileResourcePath = "Prezzi.csv";
+        String outputFileFullPath = documentPath + File.separator + "Prezzi.csv";
 
-                // Verifica se il file non esiste
-                if (!Files.exists(outputFile.toPath())) {
-                    Files.copy(inputFile.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(inputFileResourcePath);
+             OutputStream outputStream = new FileOutputStream(outputFileFullPath)) {
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
             }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
