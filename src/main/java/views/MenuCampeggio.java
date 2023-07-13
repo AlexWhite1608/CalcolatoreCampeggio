@@ -5,7 +5,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.*;
 
 public class MenuCampeggio extends JPanel {
-    private JPanel mainPanel;
+    private JPanel mainPanelCampeggio;
     private DatePicker datePickerArrivo;
     private DatePicker datePickerPartenza;
     private JLabel labelArrivo;
@@ -28,7 +28,7 @@ public class MenuCampeggio extends JPanel {
     private JButton btnCancella;
     private JButton btnCalcola;
     private JLabel labelTotaleCampeggio;
-    private JLabel labelTassaSoggiono;
+    private JLabel labelTassaSoggiorno;
     private JLabel labelTotaleTassa;
     private JLabel labelExtra;
     private JLabel labelTotale;
@@ -39,7 +39,7 @@ public class MenuCampeggio extends JPanel {
         // Inizializzazione pannelli
         //clearFormInitializer();
 
-        add(mainPanel);
+        add(mainPanelCampeggio);
         setVisible(true);
     }
 
