@@ -13,7 +13,7 @@ public class PrezzarioGateway {
 
     }
 
-    // Legge il file dal sistema
+    // Legge il file excel per la tabella
     private void readFile(){
 
     }

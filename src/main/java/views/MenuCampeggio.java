@@ -3,6 +3,8 @@ package views;
 import com.github.lgooddatepicker.components.DatePicker;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanelCampeggio;
@@ -39,24 +41,30 @@ public class MenuCampeggio extends JPanel {
     public MenuCampeggio() {
 
         // Inizializzazione pannelli
-        //clearFormInitializer();
+        clearFormInitializer();
 
         add(mainPanelCampeggio);
         setVisible(true);
     }
 
     // Codice per cancellare tutto il form
-//    private void clearFormInitializer(){
-//        btnCancella.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                tfNumAdulti.setText("");
-//                tfNumBambini.setText("");
-//                tfNumAnimali.setText("");
-//                tfExtra.setText("");
-//                tfNoTax.setText("");
-//            }
-//        });
-//    }
+    private void clearFormInitializer(){
+        btnCancella.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfNumAdulti.setText("");
+                tfNumBambini.setText("");
+                tfNumAnimali.setText("");
+                tfExtra.setText("");
+                tfNoTax.setText("");
+                rbCamper.setSelected(false);
+                rbTenda.setSelected(false);
+
+                //Cancella date
+                datePickerArrivo.clear();
+                datePickerPartenza.clear();
+            }
+        });
+    }
 
 }
