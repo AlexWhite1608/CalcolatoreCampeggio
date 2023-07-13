@@ -36,6 +36,7 @@ public class MenuCampeggio extends JPanel {
 
 
     public MenuCampeggio() {
+
         // Inizializzazione pannelli
         //clearFormInitializer();
 

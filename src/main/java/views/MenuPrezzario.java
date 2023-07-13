@@ -14,5 +14,4 @@ public class MenuPrezzario extends JPanel {
         add(mainPanelPrezzario);
         setVisible(true);
     }
-
 }
