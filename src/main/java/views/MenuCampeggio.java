@@ -33,6 +33,7 @@ public class MenuCampeggio extends JPanel {
     private JLabel labelExtra;
     private JLabel labelTotale;
     private JPanel pnButtons;
+    private JPanel pnInnerForm;
 
 
     public MenuCampeggio() {
