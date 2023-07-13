@@ -1,6 +1,9 @@
 package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import utils.SampleHighlightPolicy;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -40,11 +43,24 @@ public class MenuCampeggio extends JPanel {
 
     public MenuCampeggio() {
 
-        // Inizializzazione pannelli
+        // Inizializzazione
         clearFormInitializer();
 
         add(mainPanelCampeggio);
         setVisible(true);
+    }
+
+    // Inizializza i datepickers
+    //TODO: IMPLEMENTA HIGHLIGHT DELLA DATA ODIERNA
+    private void initializeDatePickers(){
+        DatePickerSettings dateSettingsArrivo = new DatePickerSettings();
+        DatePickerSettings dateSettingsPartenza = new DatePickerSettings();
+
+        dateSettingsArrivo.setHighlightPolicy(new SampleHighlightPolicy());
+        dateSettingsPartenza.setHighlightPolicy(new SampleHighlightPolicy());
+
+        datePickerArrivo = new DatePicker(dateSettingsArrivo);
+        datePickerPartenza = new DatePicker(dateSettingsPartenza);
     }
 
     // Codice per cancellare tutto il form

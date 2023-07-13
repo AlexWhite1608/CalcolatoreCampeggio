@@ -1,7 +1,5 @@
 package views;
 
-import utils.CustomDateLabelFormatter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
