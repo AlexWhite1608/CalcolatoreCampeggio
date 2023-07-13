@@ -2,7 +2,6 @@ package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import utils.SampleHighlightPolicy;
 
 import javax.swing.*;
@@ -36,9 +35,12 @@ public class MenuCampeggio extends JPanel {
     private JLabel labelTassaSoggiorno;
     private JLabel labelTotaleTassa;
     private JLabel labelExtra;
-    private JLabel labelTotale;
     private JPanel pnButtons;
     private JPanel pnInnerForm;
+    private JLabel labelCalcoloTassaSoggiorno;
+    private JLabel labelCalcoloTotaleCampeggio;
+    private JLabel labelCalcoloTotaleTassa;
+    private JTextField tfTotale;
 
 
     public MenuCampeggio() {
