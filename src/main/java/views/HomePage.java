@@ -12,7 +12,7 @@ public class HomePage extends JFrame{
     final static String MENU_MARGHERITA = "Margherita";
     final static String MENU_PREZZARIO = "Prezzario";
 
-    public HomePage() {
+    public HomePage() throws URISyntaxException {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         //Crea i menu

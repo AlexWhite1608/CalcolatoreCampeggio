@@ -12,7 +12,7 @@ public class MenuPrezzario extends JPanel {
     private JButton buttonAggiungi;
     private JPanel pnButtons;
 
-    public MenuPrezzario() {
+    public MenuPrezzario() throws URISyntaxException {
 
         PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
 
