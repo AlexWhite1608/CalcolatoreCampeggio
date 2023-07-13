@@ -12,7 +12,7 @@ public class HomePage extends JFrame{
     final static String MENU_MARGHERITA = "Margherita";
     final static String MENU_PREZZARIO = "Prezzario";
 
-    public HomePage() throws URISyntaxException {
+    public HomePage() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         //Crea i menu
@@ -34,9 +34,6 @@ public class HomePage extends JFrame{
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-
-        //TODO: USATO SOLO PER TEST, RIMUOVERE
-        PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
 
     }
 }

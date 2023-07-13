@@ -1,6 +1,9 @@
 package views;
 
+import data_access.PrezzarioGateway;
+
 import javax.swing.*;
+import java.net.URISyntaxException;
 
 public class MenuPrezzario extends JPanel {
     private JPanel mainPanelPrezzario;
@@ -10,6 +13,8 @@ public class MenuPrezzario extends JPanel {
     private JPanel pnButtons;
 
     public MenuPrezzario() {
+
+        PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
 
         add(mainPanelPrezzario);
         setVisible(true);
