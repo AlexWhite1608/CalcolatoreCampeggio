@@ -86,6 +86,8 @@ public class MenuCampeggio extends JPanel {
         PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
+
+                // SOLTANTO quando entrambe le date sono scelte calcola il numero di notti
                 if (datePickerArrivo.getDate() != null && datePickerPartenza.getDate() != null) {
                     setNumNights();
                 } else {
@@ -93,12 +95,29 @@ public class MenuCampeggio extends JPanel {
                 }
             }
 
+            // Controlla la correttezza delle date inserite
+            private boolean checkDates(LocalDate arrivo, LocalDate partenza){
+                return partenza.isAfter(arrivo);
+            }
+
+            // Calcola e imposta il numero di notti
             private void setNumNights() {
                 LocalDate arrivo = datePickerArrivo.getDate();
                 LocalDate partenza = datePickerPartenza.getDate();
 
-                int nights = (int) ChronoUnit.DAYS.between(arrivo, partenza);
-                tfNumNotti.setText(Integer.toString(nights));
+                if(checkDates(arrivo, partenza)){
+                    int nights = (int) ChronoUnit.DAYS.between(arrivo, partenza);
+                    tfNumNotti.setText(Integer.toString(nights));
+                } else {
+                    tfNumNotti.setText("");
+                    datePickerArrivo.closePopup();
+                    datePickerPartenza.closePopup();
+                    datePickerPartenza.setText("");
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "La data di partenza inserita è precedente alla data di arrivo",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         };
 
