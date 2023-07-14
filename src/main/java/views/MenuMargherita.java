@@ -9,7 +9,7 @@ public class MenuMargherita extends JPanel {
 
     public MenuMargherita() {
 
-        add(mainPanel);
+        //add(mainPanel);
         setVisible(true);
     }
 }

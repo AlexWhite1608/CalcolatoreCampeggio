@@ -3,6 +3,7 @@ package views;
 import data_access.PrezzarioGateway;
 
 import java.awt.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.swing.*;
 
@@ -12,7 +13,7 @@ public class HomePage extends JFrame{
     final static String MENU_MARGHERITA = "Margherita";
     final static String MENU_PREZZARIO = "Prezzario";
 
-    public HomePage() throws URISyntaxException {
+    public HomePage() throws URISyntaxException, IOException {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         //Crea i menu

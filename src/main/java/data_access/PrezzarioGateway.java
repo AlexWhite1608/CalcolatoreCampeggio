@@ -19,7 +19,6 @@ public class PrezzarioGateway {
 
     public PrezzarioGateway() throws URISyntaxException {
         values = readFile();
-        System.out.println("CIAO");
     }
 
     // Legge il file excel per la tabella
@@ -42,7 +41,6 @@ public class PrezzarioGateway {
             e.printStackTrace();
         }
 
-        line.remove(line.size() - 1); //rimuove lo spazio in fondo
         values.add(line);
         return values;
     }
