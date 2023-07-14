@@ -1,17 +1,17 @@
 package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import utils.Stagione;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanelCampeggio;
@@ -83,6 +83,7 @@ public class MenuCampeggio extends JPanel {
 
     // Calcolo numero notti
     private void calculateNumNotti(){
+
         PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -92,6 +93,8 @@ public class MenuCampeggio extends JPanel {
                     setNumNights();
                 } else {
                     tfNumNotti.setText("");
+                    labelAs.setText("AS:");
+                    labelBs.setText("BS:");
                 }
             }
 
@@ -108,15 +111,39 @@ public class MenuCampeggio extends JPanel {
                 if(checkDates(arrivo, partenza)){
                     int nights = (int) ChronoUnit.DAYS.between(arrivo, partenza);
                     tfNumNotti.setText(Integer.toString(nights));
-                } else {
+
+                    // Imposta giorni bassa/alta stagione
+                    calculateAsBs();
+                } else {    // Errore selezione date
+
+                    //FIXME: fai una funzione apposta che resetta tutto!
                     tfNumNotti.setText("");
                     datePickerArrivo.closePopup();
                     datePickerPartenza.closePopup();
                     datePickerPartenza.setText("");
+
+
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "La data di partenza inserita è precedente alla data di arrivo",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            // Calcola giorni bassa/alta stagione
+            private void calculateAsBs(){
+
+                String meseArrivo = datePickerArrivo.getDate().getMonth().toString();
+                String mesePartenza = datePickerPartenza.getDate().getMonth().toString();
+
+                // Mese di arrivo e mese di partenza coincidono
+                if(Objects.equals(meseArrivo, mesePartenza)){
+
+                    // Verifico la stagione
+                    if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo))
+                        labelBs.setText("BS: " + tfNumNotti.getText());
+                    else
+                        labelAs.setText("AS: " + tfNumNotti.getText());
                 }
             }
         };

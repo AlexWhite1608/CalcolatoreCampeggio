@@ -55,7 +55,7 @@ public class MenuPrezzario extends JPanel {
         add(pnTable);
     }
 
-    private void createUIComponents() throws URISyntaxException, IOException {
+    private void createUIComponents(){
         initTable();
     }
 }
