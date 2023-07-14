@@ -88,6 +88,8 @@ public class MenuCampeggio extends JPanel {
             public void propertyChange(PropertyChangeEvent evt) {
                 if (datePickerArrivo.getDate() != null && datePickerPartenza.getDate() != null) {
                     setNumNights();
+                } else {
+                    tfNumNotti.setText("");
                 }
             }
 
