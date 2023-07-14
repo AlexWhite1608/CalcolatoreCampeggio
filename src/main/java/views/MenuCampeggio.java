@@ -117,15 +117,10 @@ public class MenuCampeggio extends JPanel {
 
                     // Imposta giorni bassa/alta stagione
                     calculateAsBs();
-                } else {    // Errore selezione date
 
-                    //FIXME: fai una funzione apposta che resetta tutto!
-                    tfNumNotti.setText("");
-                    datePickerArrivo.closePopup();
-                    datePickerPartenza.closePopup();
-                    datePickerPartenza.setText("");
-
-
+                // Errore selezione date
+                } else {
+                    resetForm();
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "La data di partenza inserita è precedente alla data di arrivo",
                             "Errore",
@@ -176,6 +171,14 @@ public class MenuCampeggio extends JPanel {
                         labelAs.setText("AS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
                     }
                 }
+            }
+
+            // Resetta il form nel caso in cui le date inserite siano errate
+            private void resetForm(){
+                tfNumNotti.setText("");
+                datePickerArrivo.closePopup();
+                datePickerPartenza.closePopup();
+                datePickerPartenza.setText("");
             }
         };
 
