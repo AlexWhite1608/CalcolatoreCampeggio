@@ -13,6 +13,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanelCampeggio;
     private DatePicker datePickerArrivo;
@@ -138,12 +141,27 @@ public class MenuCampeggio extends JPanel {
 
                 // Mese di arrivo e mese di partenza coincidono
                 if(Objects.equals(meseArrivo, mesePartenza)){
-
                     // Verifico la stagione
                     if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo))
                         labelBs.setText("BS: " + tfNumNotti.getText());
                     else
                         labelAs.setText("AS: " + tfNumNotti.getText());
+                } else {
+                    int giornoArrivoInt = datePickerArrivo.getDate().getDayOfMonth();
+                    int meseArrivoInt = datePickerArrivo.getDate().getMonth().getValue();
+                    int annoArrivoInt = datePickerArrivo.getDate().getYear();
+
+                    LocalDate initialArrivo = LocalDate.of(annoArrivoInt, meseArrivoInt, giornoArrivoInt).withDayOfMonth(1);
+                    LocalDate endArrivo = initialArrivo.with(lastDayOfMonth());
+                    int rangeDiGiorniArrivo = endArrivo.getDayOfMonth() - giornoArrivoInt;
+
+                    if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)){
+                        labelBs.setText("BS: " + rangeDiGiorniArrivo);
+                        labelAs.setText("AS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
+                    } else {
+                        labelBs.setText("BS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
+                        labelAs.setText("AS: " + rangeDiGiorniArrivo);
+                    }
                 }
             }
         };
