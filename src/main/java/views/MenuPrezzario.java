@@ -33,12 +33,12 @@ public class MenuPrezzario extends JPanel {
 
         // Crea il modello della tabella con i dati e i nomi delle colonne
         Object[][] data = {
-                {"Camper", 13.0, 16.0},
-                {"Tenda", 9.0, 12.0},
-                {"Adulti", 8.0, 10.0},
-                {"Bambini (3-10)", 4.5, 6.0},
-                {"Animali", 3.0, 3.0},
-                {"Tassa di soggiorno (>12)", 1.5, 1.5}
+                {"Camper", "€" + 13.0, "€" + 16.0},
+                {"Tenda", "€" + 9.0, "€" + 12.0},
+                {"Adulti", "€" + 8.0, "€" + 10.0},
+                {"Bambini (3-10)", "€" + 4.5, "€" + 6.0},
+                {"Animali", "€" + 3.0, "€" + 3.0},
+                {"Tassa di soggiorno (>12)", "€" + 1.5, "€" + 1.5}
         };
         String[] columnNames = {"Tipologia", "Bassa Stagione", "Alta Stagione"};
         DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);

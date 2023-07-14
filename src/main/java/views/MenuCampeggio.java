@@ -1,12 +1,17 @@
 package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
-import utils.SampleHighlightPolicy;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanelCampeggio;
@@ -45,26 +50,16 @@ public class MenuCampeggio extends JPanel {
 
     public MenuCampeggio() {
 
-        // Inizializzazione
-        createUIComponents();
+        // Inizializzazione button di cancellazione del form
         clearFormInitializer();
+
+        // Calcolo numero di notti
+        calculateNumNotti();
 
         add(mainPanelCampeggio);
         setVisible(true);
     }
 
-    // Inizializza i datepickers
-    //TODO: IMPLEMENTA HIGHLIGHT DELLA DATA ODIERNA
-    private void initializeDatePickers(){
-        DatePickerSettings dateSettingsArrivo = new DatePickerSettings();
-        DatePickerSettings dateSettingsPartenza = new DatePickerSettings();
-
-        dateSettingsArrivo.setHighlightPolicy(new SampleHighlightPolicy());
-        dateSettingsPartenza.setHighlightPolicy(new SampleHighlightPolicy());
-
-        datePickerArrivo = new DatePicker(dateSettingsArrivo);
-        datePickerPartenza = new DatePicker(dateSettingsPartenza);
-    }
 
     // Codice per cancellare tutto il form
     private void clearFormInitializer(){
@@ -86,7 +81,27 @@ public class MenuCampeggio extends JPanel {
         });
     }
 
-    private void createUIComponents() {
-        initializeDatePickers();
+    // Calcolo numero notti
+    private void calculateNumNotti(){
+        PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (datePickerArrivo.getDate() != null && datePickerPartenza.getDate() != null) {
+                    setNumNights();
+                }
+            }
+
+            private void setNumNights() {
+                LocalDate arrivo = datePickerArrivo.getDate();
+                LocalDate partenza = datePickerPartenza.getDate();
+
+                int nights = (int) ChronoUnit.DAYS.between(arrivo, partenza);
+                tfNumNotti.setText(Integer.toString(nights));
+            }
+        };
+
+        datePickerArrivo.addPropertyChangeListener("date", propertyChangeListener);
+        datePickerPartenza.addPropertyChangeListener("date", propertyChangeListener);
     }
+
 }
