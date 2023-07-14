@@ -1,8 +1,8 @@
 package utils;
 
 public enum Stagione {
-    AltaStagione(new String[]{"JUNE", "JULY", "AUGUST", "SEPTEMBER"}),
-    BassaStagione(new String[]{"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "OCTOBER", "NOVEMBER", "DECEMBER"});
+    AltaStagione(new String[]{"JUNE", "JULY", "AUGUST"}),
+    BassaStagione(new String[]{"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"});
 
     private final String[] mesi;
 

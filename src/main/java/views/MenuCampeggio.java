@@ -141,11 +141,24 @@ public class MenuCampeggio extends JPanel {
 
                 // Mese di arrivo e mese di partenza coincidono
                 if(Objects.equals(meseArrivo, mesePartenza)){
-                    // Verifico la stagione
                     if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo))
                         labelBs.setText("BS: " + tfNumNotti.getText());
                     else
                         labelAs.setText("AS: " + tfNumNotti.getText());
+
+                // Mese di arrivo e di partenza entrambi in bassa stagione
+                } else if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo) &&
+                          Arrays.asList(Stagione.BassaStagione.getMesi()).contains(mesePartenza)) {
+
+                    labelBs.setText("BS: " + tfNumNotti.getText());
+
+                // Mese di arrivo e di partenza entrambi in alta stagione
+                } else if(Arrays.asList(Stagione.AltaStagione.getMesi()).contains(meseArrivo) &&
+                          Arrays.asList(Stagione.AltaStagione.getMesi()).contains(mesePartenza)) {
+
+                    labelAs.setText("AS: " + tfNumNotti.getText());
+
+                // Mese di arrivo e mese di partenza in stagioni diverse
                 } else {
                     int giornoArrivoInt = datePickerArrivo.getDate().getDayOfMonth();
                     int meseArrivoInt = datePickerArrivo.getDate().getMonth().getValue();
@@ -156,11 +169,11 @@ public class MenuCampeggio extends JPanel {
                     int rangeDiGiorniArrivo = endArrivo.getDayOfMonth() - giornoArrivoInt;
 
                     if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)){
-                        labelBs.setText("BS: " + rangeDiGiorniArrivo);
-                        labelAs.setText("AS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
-                    } else {
                         labelBs.setText("BS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
                         labelAs.setText("AS: " + rangeDiGiorniArrivo);
+                    } else {
+                        labelBs.setText("BS: " + rangeDiGiorniArrivo);
+                        labelAs.setText("AS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
                     }
                 }
             }
