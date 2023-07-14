@@ -46,6 +46,7 @@ public class MenuCampeggio extends JPanel {
     public MenuCampeggio() {
 
         // Inizializzazione
+        createUIComponents();
         clearFormInitializer();
 
         add(mainPanelCampeggio);
@@ -85,4 +86,7 @@ public class MenuCampeggio extends JPanel {
         });
     }
 
+    private void createUIComponents() {
+        initializeDatePickers();
+    }
 }

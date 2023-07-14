@@ -15,7 +15,7 @@ public class SampleHighlightPolicy implements DateHighlightPolicy {
 
         // Confronta la data fornita con la data odierna
         if (date.equals(today)) {
-            return new HighlightInformation(Color.RED, null);
+            return new HighlightInformation(Color.LIGHT_GRAY, null);
         }
 
         // Altrimenti, non viene effettuato alcun highlight

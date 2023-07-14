@@ -27,7 +27,7 @@ public class MenuPrezzario extends JPanel {
     }
 
     // Inizializza la tabella
-    private void initTable() throws URISyntaxException, IOException {
+    private void initTable() {
         pnTable = new JPanel();
         tblPrezzi = new JTable();
 
@@ -54,8 +54,6 @@ public class MenuPrezzario extends JPanel {
         tblPrezzi.setRowHeight(50);
         add(pnTable);
     }
-
-
 
     private void createUIComponents() throws URISyntaxException, IOException {
         initTable();
