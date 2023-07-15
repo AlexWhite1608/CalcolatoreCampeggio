@@ -53,8 +53,9 @@ public class MenuCampeggio extends JPanel {
     private JLabel labelCalcoloTotaleTassa;
     private JTextField tfTotale;
     private JButton btnStampa;
+    private JPanel pnToolBar;
+    private JToolBar toolBar;
     private JButton btnSconto;
-    private JToolBar progressBar;
 
 
     public MenuCampeggio() throws IOException {
@@ -401,6 +402,15 @@ public class MenuCampeggio extends JPanel {
         btnStampa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //TODO: crea dialog dove inserire nome della prenotazione per lo screenshot
+                JTextField tfNomePrenotazione = new JTextField();
+                JOptionPane optionPane = new JOptionPane(
+                        "Inserire il nome della prenotazione:",
+                        JOptionPane.QUESTION_MESSAGE,
+                        JOptionPane.YES_NO_OPTION);
+//                optionPane.add(tfNomePrenotazione);
+
                 try {
                     if(!Objects.equals(tfTotale.getText(), ""))
                         Screenshot.screenShot(pnInnerForm);
