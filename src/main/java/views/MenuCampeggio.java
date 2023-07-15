@@ -1,6 +1,7 @@
 package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import utils.Screenshot;
 import utils.Stagione;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -55,10 +57,12 @@ public class MenuCampeggio extends JPanel {
     private JToolBar progressBar;
 
 
-    public MenuCampeggio() {
-
+    public MenuCampeggio() throws IOException {
         // Setup textField (solo interi)
         setupTextFields();
+
+        // Setup button per stampare schermata
+        setupPrintButton();
 
         // Cancella il form quando si clicca su "cancella"
         clearFormOnCancel();
@@ -388,6 +392,27 @@ public class MenuCampeggio extends JPanel {
                 labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
                 labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
                 tfTotale.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
+            }
+        });
+    }
+
+    // Print della schermata
+    private void setupPrintButton() throws IOException {
+        btnStampa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if(!Objects.equals(tfTotale.getText(), ""))
+                        Screenshot.screenShot(pnInnerForm);
+                    else
+                        JOptionPane.showMessageDialog(MenuCampeggio.this,
+                                "Impossibile eseguire lo screenshot, occorre prima calcolare il totale",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE);
+
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }

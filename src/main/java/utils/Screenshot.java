@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class Screenshot {
-    public static boolean screenShot(Component c) throws IOException {
+    public static void screenShot(Component c) throws IOException {
         try {
             BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
@@ -16,12 +16,15 @@ public class Screenshot {
             g.dispose();
 
             // Salva immagine
-            String pathName = System.getProperty("user.home") + "/Desktop/Screen_Prenotazioni/" + "prenotazione_" + LocalDate.now() + ".png";
-            ImageIO.write(image, "png", new File(pathName));
-        } catch (Exception e){
-            return false;
-        }
+            File directory = new File(System.getProperty("user.home") + "/Desktop/Screenshot_Prenotazioni");
+            if (!directory.exists()){
+                directory.mkdir();
+            }
 
-        return true;
+            String pathName = System.getProperty("user.home") + "/Desktop/Screenshot_Prenotazioni/" + "prenotazione_" + LocalDate.now() + ".png";
+            ImageIO.write(image, "png", new File(pathName));
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
     }
 }
