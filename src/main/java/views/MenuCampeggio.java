@@ -299,6 +299,13 @@ public class MenuCampeggio extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                // Controllo di aver inserito le date
+                if(Objects.equals(datePickerArrivo.getText(), "") || Objects.equals(datePickerArrivo.getText(), ""))
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "Inserire le date!",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+
                 // Totali
                 float totaleCampeggio = 0;
 
