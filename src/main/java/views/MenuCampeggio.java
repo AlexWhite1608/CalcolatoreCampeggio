@@ -66,6 +66,9 @@ public class MenuCampeggio extends JPanel {
         // Calcolo numero di notti
         calculateNumNotti();
 
+        // Calcolo totale
+        calculateTotal();
+
         add(mainPanelCampeggio);
         setVisible(true);
     }
@@ -128,10 +131,12 @@ public class MenuCampeggio extends JPanel {
                 // Cancella date
                 datePickerArrivo.clear();
                 datePickerPartenza.clear();
+
+                // Cancella totali
+                labelCalcoloTotaleCampeggio.setText("");
             }
         });
     }
-
 
     // Calcolo numero notti
     private void calculateNumNotti(){
@@ -207,25 +212,70 @@ public class MenuCampeggio extends JPanel {
                     labelAs.setText("AS: " + tfNumNotti.getText());
                     labelBs.setText("BS: " + "0");
 
-                //TODO: Mese di arrivo e mese di partenza nella stessa stagione ma in mezzo cambia la stagione
-                } else if(false){
-
                 // Mese di arrivo e mese di partenza in stagioni diverse
-                } else {
+                } else if(Arrays.asList(Stagione.AltaStagione.getMesi()).contains(meseArrivo) && Arrays.asList(Stagione.BassaStagione.getMesi()).contains(mesePartenza) ||
+                          Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo) && Arrays.asList(Stagione.AltaStagione.getMesi()).contains(mesePartenza)){
+
                     int giornoArrivoInt = datePickerArrivo.getDate().getDayOfMonth();
-                    int meseArrivoInt = datePickerArrivo.getDate().getMonth().getValue();
+                    int meseArrivoInt = datePickerArrivo.getDate().getMonthValue();
                     int annoArrivoInt = datePickerArrivo.getDate().getYear();
 
                     LocalDate initialArrivo = LocalDate.of(annoArrivoInt, meseArrivoInt, giornoArrivoInt).withDayOfMonth(1);
-                    LocalDate endArrivo = initialArrivo.with(lastDayOfMonth());
-                    int rangeDiGiorniArrivo = endArrivo.getDayOfMonth() - (endArrivo.getDayOfMonth() - giornoArrivoInt);
+                    LocalDate endArrivo = initialArrivo.withDayOfMonth(initialArrivo.lengthOfMonth());
 
-                    if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)){
-                        labelBs.setText("BS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
-                        labelAs.setText("AS: " + rangeDiGiorniArrivo);
+                    int numeroNotti = Integer.parseInt(tfNumNotti.getText());
+                    int numeroNottiInBS = 0;
+                    int numeroNottiInAS = 0;
+
+                    if (Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)) {
+                        numeroNottiInBS = Math.min(numeroNotti, endArrivo.getDayOfMonth() - giornoArrivoInt + 1);
+                        numeroNottiInAS = numeroNotti - numeroNottiInBS;
                     } else {
-                        labelBs.setText("BS: " + rangeDiGiorniArrivo);
-                        labelAs.setText("AS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
+                        numeroNottiInAS = Math.min(numeroNotti, endArrivo.getDayOfMonth() - giornoArrivoInt + 1);
+                        numeroNottiInBS = numeroNotti - numeroNottiInAS;
+                    }
+
+                    labelBs.setText("BS: " + numeroNottiInBS);
+                    labelAs.setText("AS: " + numeroNottiInAS);
+
+                // Mese di arrivo e mese di partenza nella stessa stagione ma in mezzo cambia la stagione
+                //TODO: trova una condizione valida!
+                } else {
+                    int giornoArrivoInt = datePickerArrivo.getDate().getDayOfMonth();
+                    int meseArrivoInt = datePickerArrivo.getDate().getMonthValue();
+                    int annoArrivoInt = datePickerArrivo.getDate().getYear();
+
+                    int giornoPartenzaInt = datePickerPartenza.getDate().getDayOfMonth();
+                    int mesePartenzaInt = datePickerPartenza.getDate().getMonthValue();
+                    int annoPartenzaInt = datePickerPartenza.getDate().getYear();
+
+                    LocalDate initialArrivo = LocalDate.of(annoArrivoInt, meseArrivoInt, giornoArrivoInt).withDayOfMonth(1);
+                    LocalDate endArrivo = initialArrivo.withDayOfMonth(initialArrivo.lengthOfMonth());
+                    LocalDate initialPartenza = LocalDate.of(annoPartenzaInt, mesePartenzaInt, giornoPartenzaInt).withDayOfMonth(1);
+
+                    int numeroNotti = Integer.parseInt(tfNumNotti.getText());
+                    int numeroNottiInBS = 0;
+                    int numeroNottiInAS = 0;
+
+                    // Se il mese di arrivo è nella bassa stagione
+                    if (Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)) {
+                        numeroNottiInBS = Math.min(numeroNotti, endArrivo.getDayOfMonth() - giornoArrivoInt + 1);
+
+                        // Se il mese di partenza è nella bassa stagione
+                        if (Arrays.asList(Stagione.BassaStagione.getMesi()).contains(mesePartenza)) {
+                            numeroNottiInBS += numeroNotti - numeroNottiInBS;
+                        } else {
+                            numeroNottiInAS = numeroNotti - numeroNottiInBS;
+                        }
+                    } else {
+                        numeroNottiInAS = Math.min(numeroNotti, endArrivo.getDayOfMonth() - giornoArrivoInt + 1);
+
+                        // Se il mese di partenza è nella stagione alta
+                        if (Arrays.asList(Stagione.BassaStagione.getMesi()).contains(mesePartenza)) {
+                            numeroNottiInBS = numeroNotti - numeroNottiInAS;
+                        } else {
+                            numeroNottiInAS += numeroNotti - numeroNottiInAS;
+                        }
                     }
                 }
             }
@@ -248,7 +298,56 @@ public class MenuCampeggio extends JPanel {
         btnCalcola.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implementa logica di calcolo
+
+                // Totali
+                float totaleCampeggio = 0;
+
+                //TODO: Ricava i prezzi
+                float prezzoCamperAs = 16;
+                float prezzoCamperBs = 13;
+                float prezzoTendaAs = 12;
+                float prezzoTendaBs = 9;
+                float prezzoAdultoAs = 10;
+                float prezzoAdultoBs = 8;
+                float prezzoBambinoAs = 6;
+                float prezzoBambinoBs = 4.5F;
+                float prezzoAnimale = 3;
+                float taxSoggiorno = 1.5F;
+
+                // Numero notti
+                int numNottiAs = Integer.parseInt(labelAs.getText().replace("AS: ", ""));
+                int numNottiBs = Integer.parseInt(labelBs.getText().replace("BS: ", ""));
+
+                // Numeri clienti
+                int numAdulti = 0;
+                int numBambini = 0;
+                int numAnimali = 0;
+                if(!Objects.equals(tfNumAdulti.getText(), ""))
+                    numAdulti = Integer.parseInt(tfNumAdulti.getText());
+                if(!Objects.equals(tfNumBambini.getText(), ""))
+                    numBambini = Integer.parseInt(tfNumBambini.getText());
+                if(!Objects.equals(tfNumAnimali.getText(), ""))
+                    numAnimali = Integer.parseInt(tfNumAnimali.getText());
+
+                // Camper o tenda
+                boolean tenda = rbTenda.isSelected();
+                boolean camper = rbCamper.isSelected();
+
+                // Calcolo totale campeggio
+                if(tenda)
+                    totaleCampeggio = ((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoTendaAs) * numNottiAs +
+                    ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoTendaBs) * numNottiBs;
+                else if(camper)
+                    totaleCampeggio =((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoCamperAs) * numNottiAs +
+                    ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoCamperBs) * numNottiBs;
+                else
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "Selezionare camper oppure tenda",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+
+                // Imposta totali
+                labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
             }
         });
     }
