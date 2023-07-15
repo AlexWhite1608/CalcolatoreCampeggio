@@ -134,6 +134,8 @@ public class MenuCampeggio extends JPanel {
 
                 // Cancella totali
                 labelCalcoloTotaleCampeggio.setText("");
+                labelCalcoloTotaleTassa.setText("");
+                labelCalcoloTassaSoggiorno.setText("");
             }
         });
     }
@@ -308,6 +310,7 @@ public class MenuCampeggio extends JPanel {
 
                 // Totali
                 float totaleCampeggio = 0;
+                float totaleCampeggioConTassa = 0;
 
                 //TODO: Ricava i prezzi
                 float prezzoCamperAs = 16;
@@ -322,6 +325,7 @@ public class MenuCampeggio extends JPanel {
                 float taxSoggiorno = 1.5F;
 
                 // Numero notti
+                int numNotti = Integer.parseInt(tfNumNotti.getText());
                 int numNottiAs = Integer.parseInt(labelAs.getText().replace("AS: ", ""));
                 int numNottiBs = Integer.parseInt(labelBs.getText().replace("BS: ", ""));
 
@@ -353,8 +357,20 @@ public class MenuCampeggio extends JPanel {
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
 
-                // Imposta totali
+                // Calcolo tassa soggiorno
+                int noTax = 0;
+                if(!Objects.equals(tfNoTax.getText(), ""))
+                    noTax = Integer.parseInt(tfNoTax.getText());
+
+                if(numAdulti <= 4)
+                    totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * numNotti;
+                if(numNotti > 4)
+                    totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
+
+                // Imposta i totale
                 labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
+                labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
+                labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
             }
         });
     }
