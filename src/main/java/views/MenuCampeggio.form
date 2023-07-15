@@ -262,8 +262,17 @@
               <foreground color="-16777216"/>
               <requestFocusEnabled value="false"/>
               <selectedTextColor color="-16777216"/>
-              <text value="TOTALE:"/>
+              <text value=""/>
               <toolTipText value=""/>
+            </properties>
+          </component>
+          <component id="9504d" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font size="14" style="1"/>
+              <text value="TOTALE:"/>
             </properties>
           </component>
         </children>

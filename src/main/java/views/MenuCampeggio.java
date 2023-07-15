@@ -136,6 +136,7 @@ public class MenuCampeggio extends JPanel {
                 labelCalcoloTotaleCampeggio.setText("");
                 labelCalcoloTotaleTassa.setText("");
                 labelCalcoloTassaSoggiorno.setText("");
+                tfTotale.setText("");
             }
         });
     }
@@ -308,6 +309,14 @@ public class MenuCampeggio extends JPanel {
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
 
+                // Controllo di aver inserito almeno un valore
+                if(Objects.equals(tfNumAdulti.getText(), "") && Objects.equals(tfNumBambini.getText(), "") && Objects.equals(tfNumAnimali.getText(), "")){
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "Inserire il numero degli ospiti!",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
                 // Totali
                 float totaleCampeggio = 0;
                 float totaleCampeggioConTassa = 0;
@@ -344,18 +353,20 @@ public class MenuCampeggio extends JPanel {
                 boolean tenda = rbTenda.isSelected();
                 boolean camper = rbCamper.isSelected();
 
-                // Calcolo totale campeggio
-                if(tenda)
-                    totaleCampeggio = ((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoTendaAs) * numNottiAs +
-                    ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoTendaBs) * numNottiBs;
-                else if(camper)
-                    totaleCampeggio =((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoCamperAs) * numNottiAs +
-                    ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoCamperBs) * numNottiBs;
-                else
+                if(tenda || camper) {
+                    if (tenda) {
+                        totaleCampeggio = ((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoTendaAs) * numNottiAs +
+                                ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoTendaBs) * numNottiBs;
+                    } else {
+                        totaleCampeggio = ((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoCamperAs) * numNottiAs +
+                                ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoCamperBs) * numNottiBs;
+                    }
+                } else {
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "Selezionare camper oppure tenda",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
+                }
 
                 // Calcolo tassa soggiorno
                 int noTax = 0;
@@ -367,10 +378,16 @@ public class MenuCampeggio extends JPanel {
                 if(numNotti > 4)
                     totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
 
-                // Imposta i totale
+                // Calcolo eventuale extra
+                int extra = 0;
+                if(!Objects.equals(tfExtra.getText(), ""))
+                    extra = Integer.parseInt(tfExtra.getText());
+
+                // Imposta i vari totale
                 labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
                 labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
                 labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
+                tfTotale.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
             }
         });
     }
