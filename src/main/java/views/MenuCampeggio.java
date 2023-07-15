@@ -98,10 +98,18 @@ public class MenuCampeggio extends JPanel {
     }
 
     // Codice per cancellare tutto il form
-    private void clearFormOnCancel(){
+    private void clearFormOnCancel() {
         btnCancella.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Rimuovi il DocumentFilter temporaneamente
+                DocumentFilter numberFilter = ((AbstractDocument) tfNumAdulti.getDocument()).getDocumentFilter();
+                ((AbstractDocument) tfNumAdulti.getDocument()).setDocumentFilter(null);
+                ((AbstractDocument) tfNoTax.getDocument()).setDocumentFilter(null);
+                ((AbstractDocument) tfNumBambini.getDocument()).setDocumentFilter(null);
+                ((AbstractDocument) tfNumAnimali.getDocument()).setDocumentFilter(null);
+                ((AbstractDocument) tfExtra.getDocument()).setDocumentFilter(null);
+
                 tfNumAdulti.setText("");
                 tfNumBambini.setText("");
                 tfNumAnimali.setText("");
@@ -110,12 +118,20 @@ public class MenuCampeggio extends JPanel {
                 rbCamper.setSelected(false);
                 rbTenda.setSelected(false);
 
-                //Cancella date
+                // Ripristina il DocumentFilter
+                ((AbstractDocument) tfNumAdulti.getDocument()).setDocumentFilter(numberFilter);
+                ((AbstractDocument) tfNoTax.getDocument()).setDocumentFilter(numberFilter);
+                ((AbstractDocument) tfNumBambini.getDocument()).setDocumentFilter(numberFilter);
+                ((AbstractDocument) tfNumAnimali.getDocument()).setDocumentFilter(numberFilter);
+                ((AbstractDocument) tfExtra.getDocument()).setDocumentFilter(numberFilter);
+
+                // Cancella date
                 datePickerArrivo.clear();
                 datePickerPartenza.clear();
             }
         });
     }
+
 
     // Calcolo numero notti
     private void calculateNumNotti(){
