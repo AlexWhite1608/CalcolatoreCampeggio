@@ -4,8 +4,13 @@ import com.github.lgooddatepicker.components.DatePicker;
 import utils.Stagione;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -13,7 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 public class MenuCampeggio extends JPanel {
@@ -53,8 +57,11 @@ public class MenuCampeggio extends JPanel {
 
     public MenuCampeggio() {
 
-        // Inizializzazione button di cancellazione del form
-        clearFormInitializer();
+        // Setup textField (solo interi)
+        setupTextFields();
+
+        // Cancella il form quando si clicca su "cancella"
+        clearFormOnCancel();
 
         // Calcolo numero di notti
         calculateNumNotti();
@@ -63,9 +70,35 @@ public class MenuCampeggio extends JPanel {
         setVisible(true);
     }
 
+    // Setup textField
+    private void setupTextFields() {
+
+        // Permette solo numeri interi
+        DocumentFilter numberFilter = new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches("\\d+")) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("\\d+")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        };
+
+        ((AbstractDocument) tfNumAdulti.getDocument()).setDocumentFilter(numberFilter);
+        ((AbstractDocument) tfNoTax.getDocument()).setDocumentFilter(numberFilter);
+        ((AbstractDocument) tfNumBambini.getDocument()).setDocumentFilter(numberFilter);
+        ((AbstractDocument) tfNumAnimali.getDocument()).setDocumentFilter(numberFilter);
+        ((AbstractDocument) tfExtra.getDocument()).setDocumentFilter(numberFilter);
+    }
 
     // Codice per cancellare tutto il form
-    private void clearFormInitializer(){
+    private void clearFormOnCancel(){
         btnCancella.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,22 +169,30 @@ public class MenuCampeggio extends JPanel {
 
                 // Mese di arrivo e mese di partenza coincidono
                 if(Objects.equals(meseArrivo, mesePartenza)){
-                    if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo))
+                    if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)){
                         labelBs.setText("BS: " + tfNumNotti.getText());
-                    else
+                        labelAs.setText("AS: " + "0");
+                    } else {
                         labelAs.setText("AS: " + tfNumNotti.getText());
+                        labelBs.setText("BS: " + "0");
+                    }
 
                 // Mese di arrivo e di partenza entrambi in bassa stagione
                 } else if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo) &&
                           Arrays.asList(Stagione.BassaStagione.getMesi()).contains(mesePartenza)) {
 
                     labelBs.setText("BS: " + tfNumNotti.getText());
+                    labelAs.setText("AS: " + "0");
 
                 // Mese di arrivo e di partenza entrambi in alta stagione
                 } else if(Arrays.asList(Stagione.AltaStagione.getMesi()).contains(meseArrivo) &&
                           Arrays.asList(Stagione.AltaStagione.getMesi()).contains(mesePartenza)) {
 
                     labelAs.setText("AS: " + tfNumNotti.getText());
+                    labelBs.setText("BS: " + "0");
+
+                //TODO: Mese di arrivo e mese di partenza nella stessa stagione ma in mezzo cambia la stagione
+                } else if(false){
 
                 // Mese di arrivo e mese di partenza in stagioni diverse
                 } else {
@@ -161,7 +202,7 @@ public class MenuCampeggio extends JPanel {
 
                     LocalDate initialArrivo = LocalDate.of(annoArrivoInt, meseArrivoInt, giornoArrivoInt).withDayOfMonth(1);
                     LocalDate endArrivo = initialArrivo.with(lastDayOfMonth());
-                    int rangeDiGiorniArrivo = endArrivo.getDayOfMonth() - giornoArrivoInt;
+                    int rangeDiGiorniArrivo = endArrivo.getDayOfMonth() - (endArrivo.getDayOfMonth() - giornoArrivoInt);
 
                     if(Arrays.asList(Stagione.BassaStagione.getMesi()).contains(meseArrivo)){
                         labelBs.setText("BS: " + (Integer.parseInt(tfNumNotti.getText()) - rangeDiGiorniArrivo));
@@ -186,4 +227,13 @@ public class MenuCampeggio extends JPanel {
         datePickerPartenza.addPropertyChangeListener("date", propertyChangeListener);
     }
 
+    // Calcolo totale
+    private void calculateTotal(){
+        btnCalcola.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: implementa logica di calcolo
+            }
+        });
+    }
 }
