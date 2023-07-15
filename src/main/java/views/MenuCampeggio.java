@@ -10,15 +10,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
-
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 public class MenuCampeggio extends JPanel {
     private JPanel mainPanelCampeggio;
@@ -53,6 +50,9 @@ public class MenuCampeggio extends JPanel {
     private JLabel labelCalcoloTotaleCampeggio;
     private JLabel labelCalcoloTotaleTassa;
     private JTextField tfTotale;
+    private JButton btnStampa;
+    private JButton btnSconto;
+    private JToolBar progressBar;
 
 
     public MenuCampeggio() {
