@@ -57,19 +57,21 @@ public class MenuCampeggio extends JPanel {
     private JToolBar toolBar;
     private JButton btnSconto;
 
-
-    public MenuCampeggio() throws IOException {
+    public MenuCampeggio() {
         // Setup textField (solo interi)
         setupTextFields();
 
         // Setup button per stampare schermata
         setupPrintButton();
 
-        // Cancella il form quando si clicca su "cancella"
-        clearFormOnCancel();
+        // Setup button per lo sconto
+        setupScontoButton();
 
         // Calcolo numero di notti
         calculateNumNotti();
+
+        // Cancella il form quando si clicca su "cancella"
+        clearFormOnCancel();
 
         // Calcolo totale
         calculateTotal();
@@ -308,9 +310,9 @@ public class MenuCampeggio extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 // Controllo di aver inserito le date
-                if(Objects.equals(datePickerArrivo.getText(), "") || Objects.equals(datePickerArrivo.getText(), ""))
+                if(Objects.equals(datePickerArrivo.getText(), "") || Objects.equals(datePickerPartenza.getText(), ""))
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
-                            "Inserire le date!",
+                            "Inserire entrambe le date!",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
 
@@ -398,26 +400,26 @@ public class MenuCampeggio extends JPanel {
     }
 
     // Print della schermata
-    private void setupPrintButton() throws IOException {
+    private void setupPrintButton() {
         btnStampa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Se è stato eseguito il calcolo del totale fa screen, altrimenti errore
+                if (!Objects.equals(tfTotale.getText(), "")) {
 
-                // Panel per inserimento nome della prenotazione
-                JPanel panel = new JPanel();
-                JLabel label = new JLabel("Inserire il nome della prenotazione:");
-                JTextField tfNomePrenotazione = new JTextField(20);
+                    // Panel per inserimento nome della prenotazione
+                    JPanel panel = new JPanel();
+                    JLabel label = new JLabel("Inserire il nome della prenotazione:");
+                    JTextField tfNomePrenotazione = new JTextField(20);
 
-                panel.add(label);
-                panel.add(tfNomePrenotazione);
+                    panel.add(label);
+                    panel.add(tfNomePrenotazione);
 
-                // Prende il valore inserito nella textField
-                int result = JOptionPane.showConfirmDialog(MenuCampeggio.this, panel, "Nome prenotazione", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    String nomePrenotazione = tfNomePrenotazione.getText();
+                    // Prende il valore inserito nella textField
+                    int result = JOptionPane.showConfirmDialog(MenuCampeggio.this, panel, "Nome prenotazione", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        String nomePrenotazione = tfNomePrenotazione.getText();
 
-                    // Se è stato eseguito il calcolo del totale fa screen, altrimenti errore
-                    if (!Objects.equals(tfTotale.getText(), "")) {
                         try {
                             Screenshot.screenShot(pnInnerForm, nomePrenotazione);
                             JOptionPane.showMessageDialog(MenuCampeggio.this,
@@ -427,15 +429,56 @@ public class MenuCampeggio extends JPanel {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(MenuCampeggio.this,
-                                "Impossibile eseguire lo screenshot, occorre prima calcolare il totale",
-                                "Errore",
-                                JOptionPane.ERROR_MESSAGE);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "Impossibile eseguire lo screenshot, occorre prima calcolare il totale",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
     }
 
+    // Setup del button per lo sconto
+    private void setupScontoButton() {
+        btnSconto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: lo sconto può essere applicato soltanto dopo aver calcolato il totale
+                if(Objects.equals(datePickerArrivo.getText(), "")){
+                    JOptionPane.showMessageDialog(MenuCampeggio.this,
+                            "Occorre prima calcolare il totale per applicare lo sconto",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // Panel per la scelta dello sconto
+                    JPanel panel = new JPanel();
+                    JLabel label = new JLabel("Sconto da applicare: ");
+                    panel.add(label);
+
+                    // Lista dei valori di sconto da applicare
+                    String[] percentualiSconto = {"5%", "10%", "15%", "20%", "30%"};
+
+                    JComboBox<String> comboBoxSconto = new JComboBox<>(percentualiSconto);
+                    panel.add(comboBoxSconto);
+
+                    int result = JOptionPane.showConfirmDialog(MenuCampeggio.this, panel, "Sconto", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        String scontoSelezionato = (String) comboBoxSconto.getSelectedItem();
+
+                        // Rimuove il simbolo percentuale e converti in intero
+                        int percentuale = Integer.parseInt(scontoSelezionato.replace("%", ""));
+
+                        // Applica la percentuale al totale precedentemente calcolato
+                        float totale = Float.parseFloat(tfTotale.getText());
+                        float totaleScontato = totale - ((totale / 100) * percentuale);
+                        tfTotale.setText(Float.toString(totaleScontato) + " (Scontato " + percentuale + "%)");
+                    }
+                }
+
+
+            }
+        });
+    }
 }
