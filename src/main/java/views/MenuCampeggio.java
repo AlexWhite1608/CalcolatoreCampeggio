@@ -403,27 +403,39 @@ public class MenuCampeggio extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //TODO: crea dialog dove inserire nome della prenotazione per lo screenshot
-                JTextField tfNomePrenotazione = new JTextField();
-                JOptionPane optionPane = new JOptionPane(
-                        "Inserire il nome della prenotazione:",
-                        JOptionPane.QUESTION_MESSAGE,
-                        JOptionPane.YES_NO_OPTION);
-//                optionPane.add(tfNomePrenotazione);
+                // Panel per inserimento nome della prenotazione
+                JPanel panel = new JPanel();
+                JLabel label = new JLabel("Inserire il nome della prenotazione:");
+                JTextField tfNomePrenotazione = new JTextField(20);
 
-                try {
-                    if(!Objects.equals(tfTotale.getText(), ""))
-                        Screenshot.screenShot(pnInnerForm);
-                    else
+                panel.add(label);
+                panel.add(tfNomePrenotazione);
+
+                // Prende il valore inserito nella textField
+                int result = JOptionPane.showConfirmDialog(MenuCampeggio.this, panel, "Nome prenotazione", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.OK_OPTION) {
+                    String nomePrenotazione = tfNomePrenotazione.getText();
+
+                    // Se è stato eseguito il calcolo del totale fa screen, altrimenti errore
+                    if (!Objects.equals(tfTotale.getText(), "")) {
+                        try {
+                            Screenshot.screenShot(pnInnerForm, nomePrenotazione);
+                            JOptionPane.showMessageDialog(MenuCampeggio.this,
+                                    "Screenshot salvato",
+                                    "Info",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else {
                         JOptionPane.showMessageDialog(MenuCampeggio.this,
                                 "Impossibile eseguire lo screenshot, occorre prima calcolare il totale",
                                 "Errore",
                                 JOptionPane.ERROR_MESSAGE);
-
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    }
                 }
             }
         });
     }
+
 }
