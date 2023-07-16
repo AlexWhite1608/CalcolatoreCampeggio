@@ -1,51 +1,60 @@
 package data_access;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class PrezzarioGateway {
 
-    private ArrayList<ArrayList<String>> values;
-    private final URL urlPrezzi = getClass().getClassLoader().getResource("Prezzi.csv");
-    private final String pathToPrezzi = Paths.get(urlPrezzi.toURI()).toString();
+    private Connection connection;
+    private final String dbPath = Objects.requireNonNull(getClass().getResource("/Campeggio.db")).toString();
 
-    public PrezzarioGateway() throws URISyntaxException {
-        values = readFile();
+    public PrezzarioGateway() {
+
+        // Esegue connessione al database
+        connect();
     }
 
-    // Legge il file excel per la tabella
-    private ArrayList<ArrayList<String>> readFile() throws URISyntaxException {
-        ArrayList<ArrayList<String>> values = new ArrayList<>();
-        ArrayList<String> line = new ArrayList<>();
-
-        CSVReader reader = null;
+    // Esegue connessione al database
+    private void connect(){
         try {
-            reader = new CSVReader(new FileReader(pathToPrezzi));
-            String[] nextLine;
-            //reads one line at a time
-            while ((nextLine = reader.readNext()) != null) {
-                for (String token: nextLine) {
-                    line.add(token);
-                }
+            // Verifica se la connessione esiste già
+            if (connection != null && !connection.isClosed()) {
+                return;
             }
-        }
-        catch(Exception e) {
+
+            // Carica il driver JDBC per SQLite
+            Class.forName("org.sqlite.JDBC");
+
+            // Apre la connessione al database SQLite
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+            System.out.println("Connesso al database");
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC driver non trovato");
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+            System.out.println("Impossibile connettersi al database");
             e.printStackTrace();
         }
 
-        values.add(line);
-        return values;
     }
 
-    public ArrayList<ArrayList<String>> getValues() {
-        return values;
+    // Esegue disconnessione dal database
+    private void disconnect() {
+        try {
+            // Verifica se la connessione esiste e chiude la connessione
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Disconnesso dal database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Impossibile disconnettersi dal database");
+            e.printStackTrace();
+        }
     }
+
 }
