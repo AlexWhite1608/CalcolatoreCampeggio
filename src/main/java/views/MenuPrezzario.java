@@ -35,8 +35,15 @@ public class MenuPrezzario extends JPanel {
         ResultSet resultSet = prezzarioGateway.execSelectQuery(initialQuery);
         tblPrezzi = new JTable(prezzarioGateway.buildTableModel(resultSet));
 
-        pnTable.add(new JScrollPane(tblPrezzi));
-        tblPrezzi.setRowHeight(30);
+        // Imposta le dimensioni della tabella
+        int visibleRows = 10;
+        int rowHeight = 30;
+        int headerHeight = 30;
+        int width = 500;
+        int height = (visibleRows * rowHeight) + headerHeight;
+        tblPrezzi.setPreferredScrollableViewportSize(new Dimension(width, height));
+        tblPrezzi.setRowHeight(rowHeight);
+
 
         // Aggiungi il pannello della tabella al mainPanelPrezzario utilizzando il GridBagLayout
         mainPanelPrezzario.setLayout(new GridBagLayout());
@@ -47,6 +54,8 @@ public class MenuPrezzario extends JPanel {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         mainPanelPrezzario.add(pnTable, gbc);
+
+        pnTable.add(new JScrollPane(tblPrezzi));
     }
 
     private void initButtons() {
