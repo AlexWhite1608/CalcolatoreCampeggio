@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class HomePage extends JFrame{
     private final static String MENU_MARGHERITA = "Margherita";
     private final static String MENU_PREZZARIO = "Prezzario";
 
-    public HomePage() throws URISyntaxException, IOException {
+    public HomePage() throws IOException, SQLException {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // Imposta l'icona

@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MenuPrezzario extends JPanel {
     private JPanel mainPanelPrezzario;
@@ -15,7 +17,7 @@ public class MenuPrezzario extends JPanel {
     private JPanel pnButtons;
     private JPanel pnTable;
 
-    public MenuPrezzario() throws URISyntaxException, IOException {
+    public MenuPrezzario() throws SQLException {
 
         //initTable();
         createUIComponents();
@@ -25,19 +27,24 @@ public class MenuPrezzario extends JPanel {
     }
 
     // Inizializza la tabella
-    private void initTable() {
+    private void initTable() throws SQLException {
         pnTable = new JPanel();
-        tblPrezzi = new JTable();
 
         PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
 
+        // Query di select iniziale per vedere tutti i prezzi
+        String initialQuery = "SELECT * FROM Prezzario";
+        ResultSet resultSet = prezzarioGateway.execSelectQuery(initialQuery);
+
+        tblPrezzi = new JTable(prezzarioGateway.buildTableModel(resultSet));
+
         pnTable.add(new JScrollPane(tblPrezzi));
-        tblPrezzi.setRowHeight(50);
+        tblPrezzi.setRowHeight(30);
 
         add(pnTable);
     }
 
-    private void createUIComponents(){
+    private void createUIComponents() throws SQLException {
         initTable();
     }
 }

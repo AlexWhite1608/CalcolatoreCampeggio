@@ -1,9 +1,9 @@
 package data_access;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 import java.util.Objects;
+import java.util.Vector;
 
 public class PrezzarioGateway {
 
@@ -55,6 +55,43 @@ public class PrezzarioGateway {
             System.out.println("Impossibile disconnettersi dal database");
             e.printStackTrace();
         }
+    }
+
+    // Esegue la query di select fornita ritornando il resultset
+    public ResultSet execSelectQuery(String query) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet;
+    }
+
+    // Esegue le query di update ritornando il resultset
+    public ResultSet execUpdateQuery(String query) {
+        return null;
+    }
+
+    // Costruisce il table model passando il result set della query
+    public DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // Nome delle colonne
+        Vector<String> columnNames = new Vector<>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // Data
+        Vector<Vector<Object>> data = new Vector<>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        return new DefaultTableModel(data, columnNames);
     }
 
 }
