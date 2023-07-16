@@ -8,7 +8,7 @@ import java.util.Vector;
 public class PrezzarioGateway {
 
     private Connection connection;
-    private final String dbPath = Objects.requireNonNull(getClass().getResource("/Campeggio.db")).toString();
+    private final String dbName = "Campeggio.db";
 
     public PrezzarioGateway() {
 
@@ -28,7 +28,7 @@ public class PrezzarioGateway {
             Class.forName("org.sqlite.JDBC");
 
             // Apre la connessione al database SQLite
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+            connection = DriverManager.getConnection("jdbc:sqlite::resource:" + dbName);
             System.out.println("Connesso al database");
 
         } catch (ClassNotFoundException e) {
