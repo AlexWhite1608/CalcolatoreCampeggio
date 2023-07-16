@@ -310,18 +310,20 @@ public class MenuCampeggio extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 // Controllo di aver inserito le date
-                if(Objects.equals(datePickerArrivo.getText(), "") || Objects.equals(datePickerPartenza.getText(), ""))
+                if (datePickerArrivo.getText().isEmpty() || datePickerPartenza.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "Inserire entrambe le date!",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
+                } else {
 
-                // Controllo di aver inserito almeno un valore
-                if(Objects.equals(tfNumAdulti.getText(), "") && Objects.equals(tfNumBambini.getText(), "") && Objects.equals(tfNumAnimali.getText(), "")){
-                    JOptionPane.showMessageDialog(MenuCampeggio.this,
-                            "Inserire il numero degli ospiti!",
-                            "Errore",
-                            JOptionPane.ERROR_MESSAGE);
+                    // Controllo di aver inserito almeno un valore
+                    if (tfNumAdulti.getText().isEmpty() && tfNumBambini.getText().isEmpty() && tfNumAnimali.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(MenuCampeggio.this,
+                                "Inserire il numero degli ospiti!",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
                 // Totali
