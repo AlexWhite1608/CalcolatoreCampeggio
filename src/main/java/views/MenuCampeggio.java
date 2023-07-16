@@ -445,7 +445,6 @@ public class MenuCampeggio extends JPanel {
         btnSconto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: lo sconto può essere applicato soltanto dopo aver calcolato il totale
                 if(Objects.equals(datePickerArrivo.getText(), "")){
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "Occorre prima calcolare il totale per applicare lo sconto",

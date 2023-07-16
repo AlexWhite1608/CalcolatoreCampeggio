@@ -4,17 +4,25 @@ import data_access.PrezzarioGateway;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Objects;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class HomePage extends JFrame{
 
-    final static String MENU_CAMPEGGIO = "Campeggio";
-    final static String MENU_MARGHERITA = "Margherita";
-    final static String MENU_PREZZARIO = "Prezzario";
+    private final static String MENU_CAMPEGGIO = "Campeggio";
+    private final static String MENU_MARGHERITA = "Margherita";
+    private final static String MENU_PREZZARIO = "Prezzario";
 
     public HomePage() throws URISyntaxException, IOException {
         JTabbedPane tabbedPane = new JTabbedPane();
+
+        // Imposta l'icona
+        Image icon = ImageIO.read(Objects.requireNonNull(getClass().getResource("/favicon-32x32.png")));
+        setIconImage(icon);
 
         //Crea i menu
         MenuCampeggio menuCampeggio = new MenuCampeggio();
