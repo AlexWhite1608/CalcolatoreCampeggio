@@ -368,33 +368,35 @@ public class MenuCampeggio extends JPanel {
                         totaleCampeggio = ((numAdulti * prezzoAdultoAs) + (numBambini * prezzoBambinoAs) + (numAnimali * prezzoAnimale) + prezzoCamperAs) * numNottiAs +
                                 ((numAdulti * prezzoAdultoBs) + (numBambini * prezzoBambinoBs) + (numAnimali * prezzoAnimale) + prezzoCamperBs) * numNottiBs;
                     }
+
+                    // Calcolo tassa soggiorno
+                    int noTax = 0;
+                    if(!Objects.equals(tfNoTax.getText(), ""))
+                        noTax = Integer.parseInt(tfNoTax.getText());
+
+                    if(numAdulti <= 4)
+                        totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * numNotti;
+                    if(numNotti > 4)
+                        totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
+
+                    // Calcolo eventuale extra
+                    int extra = 0;
+                    if(!Objects.equals(tfExtra.getText(), ""))
+                        extra = Integer.parseInt(tfExtra.getText());
+
+                    // Imposta i vari totale
+                    labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
+                    labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
+                    labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
+                    tfTotale.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
+
+                // Se non sono selezionati camper o tenda
                 } else {
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
                             "Selezionare camper oppure tenda",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-                // Calcolo tassa soggiorno
-                int noTax = 0;
-                if(!Objects.equals(tfNoTax.getText(), ""))
-                    noTax = Integer.parseInt(tfNoTax.getText());
-
-                if(numAdulti <= 4)
-                    totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * numNotti;
-                if(numNotti > 4)
-                    totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
-
-                // Calcolo eventuale extra
-                int extra = 0;
-                if(!Objects.equals(tfExtra.getText(), ""))
-                    extra = Integer.parseInt(tfExtra.getText());
-
-                // Imposta i vari totale
-                labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
-                labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
-                labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
-                tfTotale.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
             }
         });
     }
