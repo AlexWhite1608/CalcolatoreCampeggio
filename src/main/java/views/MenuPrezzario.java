@@ -73,6 +73,7 @@ public class MenuPrezzario extends JPanel {
         pnButtons.add(buttonModifica, gbc);
 
         // Proprietà dei buttons
+        buttonModifica.setFocusPainted(false);
 
         // Aggiungi il pannello dei bottoni al mainPanelPrezzario utilizzando il GridBagLayout
         gbc = new GridBagConstraints();
