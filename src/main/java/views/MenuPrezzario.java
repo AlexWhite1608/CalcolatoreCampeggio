@@ -14,7 +14,6 @@ public class MenuPrezzario extends JPanel {
     private JPanel mainPanelPrezzario;
     private JTable tblPrezzi;
     private JButton buttonModifica;
-    private JButton buttonAggiungi;
     private JPanel pnButtons;
     private JPanel pnTable;
 
@@ -61,16 +60,12 @@ public class MenuPrezzario extends JPanel {
     private void initButtons() {
         pnButtons = new JPanel(new GridBagLayout());
         buttonModifica = new JButton("Modifica");
-        buttonAggiungi = new JButton("Aggiungi");
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.CENTER;
-        pnButtons.add(buttonAggiungi, gbc);
-
         gbc.gridx = 1;
 
         // Margine per staccare i bottoni
