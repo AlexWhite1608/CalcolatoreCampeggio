@@ -30,6 +30,7 @@ public class MenuPrezzario extends JPanel {
     private void initTable() throws SQLException {
         pnTable = new JPanel();
 
+        // Popola la tabella con le informazioni nel database
         PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
         String initialQuery = "SELECT * FROM Prezzario";
         ResultSet resultSet = prezzarioGateway.execSelectQuery(initialQuery);
@@ -43,7 +44,6 @@ public class MenuPrezzario extends JPanel {
         int height = (visibleRows * rowHeight) + headerHeight;
         tblPrezzi.setPreferredScrollableViewportSize(new Dimension(width, height));
         tblPrezzi.setRowHeight(rowHeight);
-
 
         // Aggiungi il pannello della tabella al mainPanelPrezzario utilizzando il GridBagLayout
         mainPanelPrezzario.setLayout(new GridBagLayout());

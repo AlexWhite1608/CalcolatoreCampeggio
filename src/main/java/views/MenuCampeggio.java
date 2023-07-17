@@ -1,6 +1,7 @@
 package views;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import data_access.PrezzarioGateway;
 import utils.Screenshot;
 import utils.Stagione;
 
@@ -14,9 +15,12 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public class MenuCampeggio extends JPanel {
@@ -327,20 +331,48 @@ public class MenuCampeggio extends JPanel {
                 }
 
                 // Totali
-                float totaleCampeggio = 0;
-                float totaleCampeggioConTassa = 0;
+                double totaleCampeggio = 0;
+                double totaleCampeggioConTassa = 0;
 
-                //TODO: Ricava i prezzi
-                float prezzoCamperAs = 16;
-                float prezzoCamperBs = 13;
-                float prezzoTendaAs = 12;
-                float prezzoTendaBs = 9;
-                float prezzoAdultoAs = 10;
-                float prezzoAdultoBs = 8;
-                float prezzoBambinoAs = 6;
-                float prezzoBambinoBs = 4.5F;
-                float prezzoAnimale = 3;
-                float taxSoggiorno = 1.5F;
+                // Ricava i prezzi dal database
+                PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
+                ArrayList<String> tipologie = new ArrayList<>();
+                ArrayList<Double[]> prezzi = new ArrayList<>();
+                try {
+                    for (Map.Entry<String, Double[]> entrySet : prezzarioGateway.getPrices().entrySet()) {
+                        tipologie.add(entrySet.getKey());
+                        prezzi.add(entrySet.getValue());
+                    }
+                } catch (SQLException ex) {
+                    System.err.print("Errore nel ricavare i prezzi dal database!");
+                }
+
+                int indexCamper = tipologie.indexOf("Camper");
+                int indexTenda = tipologie.indexOf("Tenda");
+                int indexAdulto = tipologie.indexOf("Adulto");
+                int indexBambino = tipologie.indexOf("Bambino");
+                int indexAnimale = tipologie.indexOf("Animali");
+                int indexTaxSoggiorno = tipologie.indexOf("Tassa di soggiorno");
+
+                // Accede ai prezzi e assegna alle variabili corrispondenti
+                Double[] prezziCamper = prezzi.get(indexCamper);
+                double prezzoCamperAs = prezziCamper[0];
+                double prezzoCamperBs = prezziCamper[1];
+
+                Double[] prezziTenda = prezzi.get(indexTenda);
+                double prezzoTendaAs = prezziTenda[0];
+                double prezzoTendaBs = prezziTenda[1];
+
+                Double[] prezziAdulto = prezzi.get(indexAdulto);
+                double prezzoAdultoAs = prezziAdulto[0];
+                double prezzoAdultoBs = prezziAdulto[1];
+
+                Double[] prezziBambino = prezzi.get(indexBambino);
+                double prezzoBambinoAs = prezziBambino[0];
+                double prezzoBambinoBs = prezziBambino[1];
+
+                double prezzoAnimale = prezzi.get(indexAnimale)[0];
+                double taxSoggiorno = prezzi.get(indexTaxSoggiorno)[0];
 
                 // Numero notti
                 int numNotti = Integer.parseInt(tfNumNotti.getText());
@@ -387,10 +419,10 @@ public class MenuCampeggio extends JPanel {
                         extra = Integer.parseInt(tfExtra.getText());
 
                     // Imposta i vari totale
-                    labelCalcoloTotaleCampeggio.setText(Float.toString(totaleCampeggio));
-                    labelCalcoloTassaSoggiorno.setText(Float.toString(totaleCampeggioConTassa));
-                    labelCalcoloTotaleTassa.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa));
-                    tfTotale.setText(Float.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
+                    labelCalcoloTotaleCampeggio.setText(Double.toString(totaleCampeggio));
+                    labelCalcoloTassaSoggiorno.setText(Double.toString(totaleCampeggioConTassa));
+                    labelCalcoloTotaleTassa.setText(Double.toString(totaleCampeggio + totaleCampeggioConTassa));
+                    tfTotale.setText(Double.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
 
                 // Se non sono selezionati camper o tenda
                 } else {

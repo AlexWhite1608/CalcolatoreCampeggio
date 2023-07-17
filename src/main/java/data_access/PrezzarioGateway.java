@@ -2,8 +2,10 @@ package data_access;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.Map;
 
 public class PrezzarioGateway {
 
@@ -12,7 +14,6 @@ public class PrezzarioGateway {
 
     public PrezzarioGateway() {
 
-        // Esegue connessione al database
         connect();
     }
 
@@ -92,6 +93,24 @@ public class PrezzarioGateway {
         }
 
         return new DefaultTableModel(data, columnNames);
+    }
+
+    // Estrae i prezzi dal database
+    public Map<String, Double[]> getPrices() throws SQLException {
+        Map<String, Double[]> prezziStagioni = new HashMap<>();
+
+        String query = "SELECT * FROM Prezzario";
+        ResultSet resultSet = this.execSelectQuery(query);
+
+        while (resultSet.next()) {
+            String tipologia = resultSet.getString("Tipologia");
+            double bassaStagione = resultSet.getDouble("Bassa stagione");
+            double altaStagione = resultSet.getDouble("Alta stagione");
+
+            prezziStagioni.put(tipologia, new Double[]{bassaStagione, altaStagione});
+        }
+
+        return prezziStagioni;
     }
 
 }
