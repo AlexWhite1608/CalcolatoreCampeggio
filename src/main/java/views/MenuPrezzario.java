@@ -35,7 +35,7 @@ public class MenuPrezzario extends JPanel {
         ResultSet resultSet = prezzarioGateway.execSelectQuery(initialQuery);
         tblPrezzi = new JTable(prezzarioGateway.buildTableModel(resultSet));
 
-        // Imposta le dimensioni della tabella
+        // Impostazioni della tabella
         int visibleRows = 10;
         int rowHeight = 30;
         int headerHeight = 30;
@@ -43,6 +43,9 @@ public class MenuPrezzario extends JPanel {
         int height = (visibleRows * rowHeight) + headerHeight;
         tblPrezzi.setPreferredScrollableViewportSize(new Dimension(width, height));
         tblPrezzi.setRowHeight(rowHeight);
+        tblPrezzi.getTableHeader().setReorderingAllowed(false);
+        tblPrezzi.setDefaultEditor(Object.class, null);
+
 
         // Aggiungi il pannello della tabella al mainPanelPrezzario utilizzando il GridBagLayout
         mainPanelPrezzario.setLayout(new GridBagLayout());
