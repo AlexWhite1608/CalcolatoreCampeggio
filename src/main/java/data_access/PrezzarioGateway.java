@@ -3,7 +3,6 @@ package data_access;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Vector;
 import java.util.Map;
 
@@ -72,7 +71,7 @@ public class PrezzarioGateway {
     }
 
     // Costruisce il table model passando il result set della query
-    public DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
+    public DefaultTableModel buildCustomTableModel(ResultSet rs) throws SQLException {
         ResultSetMetaData metaData = rs.getMetaData();
 
         // Nome delle colonne
@@ -92,7 +91,25 @@ public class PrezzarioGateway {
             data.add(vector);
         }
 
-        return new DefaultTableModel(data, columnNames);
+        DefaultTableModel tableModel = setTableModelParams(data, columnNames);
+        return tableModel;
+    }
+
+    // Modifica i metodi del DefaultTableModel per la modifica della tabella
+    private DefaultTableModel setTableModelParams(Vector<Vector<Object>> data, Vector<String> columnNames){
+        DefaultTableModel model = new DefaultTableModel(data, columnNames){
+            @Override
+            public Class getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return column != 0;
+            }
+
+        };
+
+        return model;
     }
 
     // Estrae i prezzi dal database

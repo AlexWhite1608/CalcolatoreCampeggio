@@ -2,11 +2,10 @@ package views;
 
 import data_access.PrezzarioGateway;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import java.awt.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -33,7 +32,7 @@ public class MenuPrezzario extends JPanel {
         PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
         String initialQuery = "SELECT * FROM Prezzario";
         ResultSet resultSet = prezzarioGateway.execSelectQuery(initialQuery);
-        tblPrezzi = new JTable(prezzarioGateway.buildTableModel(resultSet));
+        tblPrezzi = new JTable(prezzarioGateway.buildCustomTableModel(resultSet));
 
         // Impostazioni della tabella
         int visibleRows = 10;
@@ -84,6 +83,14 @@ public class MenuPrezzario extends JPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanelPrezzario.add(pnButtons, gbc);
+
+        // Azione: modifica della table quando si clicca sul button
+        buttonModifica.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TableModel tableModel = tblPrezzi.getModel();
+            }
+        });
     }
 
     private void createUIComponents() throws SQLException {
