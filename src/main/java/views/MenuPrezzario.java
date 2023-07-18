@@ -5,9 +5,9 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -85,6 +85,42 @@ public class MenuPrezzario extends JPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanelPrezzario.add(pnButtons, gbc);
+
+        //Azione: doppio click sulla cella ne seleziona il contenuto
+        final boolean[] isDoubleClick = {false};
+
+        tblPrezzi.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    isDoubleClick[0] = true;
+                    int row = tblPrezzi.rowAtPoint(e.getPoint());
+                    int column = tblPrezzi.columnAtPoint(e.getPoint());
+
+                    // Verifica che si sia cliccato su una cella della seconda o terza colonna
+                    if (column == 1 || column == 2) {
+                        tblPrezzi.editCellAt(row, column);
+                        Component editor = tblPrezzi.getEditorComponent();
+                        if (editor != null) {
+                            editor.requestFocusInWindow();
+                            if (editor instanceof JTextComponent) {
+                                ((JTextComponent) editor).selectAll();
+                            }
+                        }
+                    }
+                } else {
+                    isDoubleClick[0] = false;
+                }
+            }
+        });
+
+        tblPrezzi.addFocusListener(new FocusAdapter() {
+            public void focusLost(FocusEvent e) {
+                if (!isDoubleClick[0]) {
+                    // Ripristina il contenuto della cella quando si fa clic fuori dalla tabella
+                    tblPrezzi.editingCanceled(null);
+                }
+            }
+        });
 
         // Azione: modifica della table quando si clicca sul button
         buttonModifica.addActionListener(new ActionListener() {
