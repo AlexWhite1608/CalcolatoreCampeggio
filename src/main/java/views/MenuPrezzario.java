@@ -63,7 +63,7 @@ public class MenuPrezzario extends JPanel {
 
     private void initButtons() {
         pnButtons = new JPanel(new GridBagLayout());
-        buttonModifica = new JButton("Modifica");
+        buttonModifica = new JButton("Salva modifiche");
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
@@ -90,29 +90,28 @@ public class MenuPrezzario extends JPanel {
         buttonModifica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Qui puoi aggiungere il codice per mostrare un dialog di conferma, se necessario
 
-                //TODO: una volta apportate le modifiche alla tabella deve apparire un dialog che ne chiede la conferma per poi salvarle sul db
-                TableModel tableModel = tblPrezzi.getModel();
-                tableModel.addTableModelListener(new TableModelListener() {
-                    @Override
-                    public void tableChanged(TableModelEvent e) {
+                // Esegui l'aggiornamento del database solo se è stato confermato l'azione
+                int confirmResult = JOptionPane.showConfirmDialog(MenuPrezzario.this,
+                        "Vuoi salvare le modifiche?",
+                        "Conferma Modifica",
+                        JOptionPane.YES_NO_OPTION);
 
-                        //Ottiene le informazioni sulla cella modificata
-                        int row = e.getFirstRow();
-                        int column = e.getColumn();
-
-                        // Richiama il metodo di modifica del database dal gateway
-                        if (row >= 0 && column >= 1) {
-                            Object data = tblPrezzi.getValueAt(row, column);
+                if (confirmResult == JOptionPane.YES_OPTION) {
+                    TableModel tableModel = tblPrezzi.getModel();
+                    for (int row = 0; row < tableModel.getRowCount(); row++) {
+                        for (int column = 1; column < tableModel.getColumnCount(); column++) {
+                            Object data = tableModel.getValueAt(row, column);
+                            String tipologia = tableModel.getValueAt(row, 0).toString();
                             try {
-                                String tipologia = tblPrezzi.getValueAt(row, 0).toString();
                                 new PrezzarioGateway().updateCellData(tipologia, data, column);
                             } catch (SQLException ex) {
                                 System.err.println("Errore durante l'aggiornamento del database: " + ex.getMessage());
                             }
                         }
                     }
-                });
+                }
             }
         });
     }
