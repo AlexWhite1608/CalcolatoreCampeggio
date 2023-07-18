@@ -65,6 +65,7 @@ public class MenuPrezzario extends JPanel {
         pnButtons = new JPanel(new GridBagLayout());
         buttonModifica = new JButton("Salva modifiche");
 
+        // Impostazione del layout
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         gbc.weightx = 1.0;
@@ -126,6 +127,7 @@ public class MenuPrezzario extends JPanel {
         buttonModifica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                PrezzarioGateway prezzarioGateway = new PrezzarioGateway();
 
                 // Esegui l'aggiornamento del database solo se è stato confermato l'azione
                 int confirmResult = JOptionPane.showConfirmDialog(MenuPrezzario.this,
@@ -140,7 +142,7 @@ public class MenuPrezzario extends JPanel {
                             Object data = tableModel.getValueAt(row, column);
                             String tipologia = tableModel.getValueAt(row, 0).toString();
                             try {
-                                new PrezzarioGateway().updateCellData(tipologia, data, column);
+                                prezzarioGateway.updateCellData(tipologia, data, column);
                             } catch (SQLException ex) {
                                 JOptionPane.showConfirmDialog(MenuPrezzario.this,
                                         "Impossibile salvare le modifiche!",
@@ -154,6 +156,8 @@ public class MenuPrezzario extends JPanel {
                             "Salvataggio modifiche",
                             JOptionPane.CLOSED_OPTION);
                 }
+
+                prezzarioGateway.disconnect();
             }
         });
     }

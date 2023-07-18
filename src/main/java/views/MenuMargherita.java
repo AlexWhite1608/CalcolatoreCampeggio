@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class MenuMargherita extends JPanel {
     private JPanel mainPanel;
-    private JButton provaButton;
 
     public MenuMargherita() {
 

@@ -43,7 +43,7 @@ public class PrezzarioGateway {
     }
 
     // Esegue disconnessione dal database
-    private void disconnect() {
+    public void disconnect() {
         try {
             // Verifica se la connessione esiste e chiude la connessione
             if (connection != null && !connection.isClosed()) {
@@ -132,8 +132,8 @@ public class PrezzarioGateway {
 
         while (resultSet.next()) {
             String tipologia = resultSet.getString("Tipologia");
-            double bassaStagione = resultSet.getDouble("Bassa stagione");
-            double altaStagione = resultSet.getDouble("Alta stagione");
+            double bassaStagione = resultSet.getDouble("Bassa_stagione");
+            double altaStagione = resultSet.getDouble("Alta_stagione");
 
             prezziStagioni.put(tipologia, new Double[]{bassaStagione, altaStagione});
         }
