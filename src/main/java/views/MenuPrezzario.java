@@ -42,7 +42,7 @@ public class MenuPrezzario extends JPanel {
         int width = 500;
         int rowCount = tblPrezzi.getRowCount();
         int height = Math.min(rowCount * rowHeight + headerHeight, visibleRows * rowHeight + headerHeight);
-        tblPrezzi.setPreferredScrollableViewportSize(new Dimension(width, height));
+        tblPrezzi.setPreferredScrollableViewportSize(new Dimension(width, height - rowHeight));
         tblPrezzi.setRowHeight(rowHeight);
         tblPrezzi.getTableHeader().setReorderingAllowed(false);
         tblPrezzi.setDefaultEditor(Object.class, null);
