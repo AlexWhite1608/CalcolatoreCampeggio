@@ -2,6 +2,8 @@ package views;
 
 import data_access.PrezzarioGateway;
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -88,7 +90,29 @@ public class MenuPrezzario extends JPanel {
         buttonModifica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //TODO: una volta apportate le modifiche alla tabella deve apparire un dialog che ne chiede la conferma per poi salvarle sul db
                 TableModel tableModel = tblPrezzi.getModel();
+                tableModel.addTableModelListener(new TableModelListener() {
+                    @Override
+                    public void tableChanged(TableModelEvent e) {
+
+                        //Ottiene le informazioni sulla cella modificata
+                        int row = e.getFirstRow();
+                        int column = e.getColumn();
+
+                        // Richiama il metodo di modifica del database dal gateway
+                        if (row >= 0 && column >= 1) {
+                            Object data = tblPrezzi.getValueAt(row, column);
+                            try {
+                                String tipologia = tblPrezzi.getValueAt(row, 0).toString();
+                                new PrezzarioGateway().updateCellData(tipologia, data, column);
+                            } catch (SQLException ex) {
+                                System.err.println("Errore durante l'aggiornamento del database: " + ex.getMessage());
+                            }
+                        }
+                    }
+                });
             }
         });
     }

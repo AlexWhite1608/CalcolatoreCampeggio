@@ -60,14 +60,22 @@ public class PrezzarioGateway {
     // Esegue la query di select fornita ritornando il resultset
     public ResultSet execSelectQuery(String query) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
 
-        return resultSet;
+        return statement.executeQuery();
     }
 
-    // Esegue le query di update ritornando il resultset
-    public ResultSet execUpdateQuery(String query) {
-        return null;
+    // Esegue update del database quando richiesto
+    public void updateCellData(String tipologia, Object data, int column) throws SQLException {
+        String columnName = (column == 1) ? "Bassa_stagione" : "Alta_stagione";
+
+        // Esegui la query di aggiornamento nel database utilizzando i dati passati
+        String updateQuery = "UPDATE Prezzario SET " + columnName + " = ? WHERE Tipologia = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            statement.setObject(1, data.toString());
+            statement.setString(2, tipologia);
+            statement.executeUpdate();
+        }
     }
 
     // Costruisce il table model passando il result set della query
