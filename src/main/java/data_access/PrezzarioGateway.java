@@ -65,7 +65,7 @@ public class PrezzarioGateway {
     }
 
     // Esegue update del database quando richiesto
-    public void updateCellData(String tipologia, Object data, int column) throws SQLException {
+    public boolean updateCellData(String tipologia, Object data, int column) throws SQLException {
         String columnName = (column == 1) ? "Bassa_stagione" : "Alta_stagione";
 
         // Esegui la query di aggiornamento nel database utilizzando i dati passati
@@ -75,6 +75,9 @@ public class PrezzarioGateway {
             statement.setObject(1, data.toString());
             statement.setString(2, tipologia);
             statement.executeUpdate();
+            return true;
+        } catch (Exception e){
+            return false;
         }
     }
 

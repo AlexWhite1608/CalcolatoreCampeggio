@@ -90,7 +90,6 @@ public class MenuPrezzario extends JPanel {
         buttonModifica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Qui puoi aggiungere il codice per mostrare un dialog di conferma, se necessario
 
                 // Esegui l'aggiornamento del database solo se è stato confermato l'azione
                 int confirmResult = JOptionPane.showConfirmDialog(MenuPrezzario.this,
@@ -107,10 +106,17 @@ public class MenuPrezzario extends JPanel {
                             try {
                                 new PrezzarioGateway().updateCellData(tipologia, data, column);
                             } catch (SQLException ex) {
-                                System.err.println("Errore durante l'aggiornamento del database: " + ex.getMessage());
+                                JOptionPane.showConfirmDialog(MenuPrezzario.this,
+                                        "Impossibile salvare le modifiche!",
+                                        "Errore salvataggio modifiche",
+                                        JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
+                    JOptionPane.showConfirmDialog(MenuPrezzario.this,
+                            "Modifiche salvate correttamente!",
+                            "Salvataggio modifiche",
+                            JOptionPane.CLOSED_OPTION);
                 }
             }
         });
@@ -120,6 +126,5 @@ public class MenuPrezzario extends JPanel {
         mainPanelPrezzario = new JPanel();
         initTable();
         initButtons();
-
     }
 }
