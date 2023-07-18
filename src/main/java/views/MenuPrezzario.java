@@ -72,7 +72,7 @@ public class MenuPrezzario extends JPanel {
         gbc.gridx = 1;
 
         // Margine per staccare i bottoni
-        gbc.insets = new Insets(0, 10, 0, 0);
+        gbc.insets = new Insets(0, 10, 10, 0);
         pnButtons.add(buttonModifica, gbc);
 
         // Proprietà dei buttons
@@ -90,5 +90,6 @@ public class MenuPrezzario extends JPanel {
         mainPanelPrezzario = new JPanel();
         initTable();
         initButtons();
+
     }
 }
