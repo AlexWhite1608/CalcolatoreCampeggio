@@ -313,6 +313,11 @@ public class MenuCampeggio extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                // Imposta allineamento delle label dei totali
+                labelCalcoloTotaleCampeggio.setHorizontalAlignment(SwingConstants.CENTER);
+                labelCalcoloTassaSoggiorno.setHorizontalAlignment(SwingConstants.CENTER);
+                labelCalcoloTotaleTassa.setHorizontalAlignment(SwingConstants.CENTER);
+
                 // Controllo di aver inserito le date
                 if (datePickerArrivo.getText().isEmpty() || datePickerPartenza.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(MenuCampeggio.this,
