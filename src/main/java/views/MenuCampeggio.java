@@ -413,7 +413,7 @@ public class MenuCampeggio extends JPanel {
                     if(!Objects.equals(tfNoTax.getText(), ""))
                         noTax = Integer.parseInt(tfNoTax.getText());
 
-                    if(numAdulti <= 4)
+                    if(numNotti <= 4)
                         totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * numNotti;
                     if(numNotti > 4)
                         totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
