@@ -41,9 +41,9 @@ public class HomePage extends JFrame{
         this.setTitle("Calcolatore prezzi");
         this.setLocationRelativeTo(null);
         this.pack();
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-
     }
 }

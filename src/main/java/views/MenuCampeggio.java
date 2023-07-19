@@ -424,10 +424,10 @@ public class MenuCampeggio extends JPanel {
                         extra = Integer.parseInt(tfExtra.getText());
 
                     // Imposta i vari totale
-                    labelCalcoloTotaleCampeggio.setText(Double.toString(totaleCampeggio));
-                    labelCalcoloTassaSoggiorno.setText(Double.toString(totaleCampeggioConTassa));
-                    labelCalcoloTotaleTassa.setText(Double.toString(totaleCampeggio + totaleCampeggioConTassa));
-                    tfTotale.setText(Double.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
+                    labelCalcoloTotaleCampeggio.setText("€ " + Double.toString(totaleCampeggio));
+                    labelCalcoloTassaSoggiorno.setText("€ " + Double.toString(totaleCampeggioConTassa));
+                    labelCalcoloTotaleTassa.setText("€ " + Double.toString(totaleCampeggio + totaleCampeggioConTassa));
+                    tfTotale.setText("€ " + Double.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
 
                 // Se non sono selezionati camper o tenda
                 } else {
@@ -511,9 +511,9 @@ public class MenuCampeggio extends JPanel {
                         int percentuale = Integer.parseInt(scontoSelezionato.replace("%", ""));
 
                         // Applica la percentuale al totale precedentemente calcolato
-                        float totale = Float.parseFloat(tfTotale.getText());
+                        float totale = Float.parseFloat(tfTotale.getText().replace("€ ", ""));
                         float totaleScontato = totale - ((totale / 100) * percentuale);
-                        tfTotale.setText(Float.toString(totaleScontato) + " (Scontato " + percentuale + "%)");
+                        tfTotale.setText(Float.toString(totaleScontato) + " (" + percentuale + "%)");
                     }
                 }
 
