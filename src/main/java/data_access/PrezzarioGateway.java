@@ -64,7 +64,7 @@ public class PrezzarioGateway {
         return statement.executeQuery();
     }
 
-    // Esegue update del database quando richiesto
+    // Esegue update del database quando viene modificata .una cella
     public boolean updateCellData(String tipologia, Object data, int column) throws SQLException {
         String columnName = (column == 1) ? "Bassa_stagione" : "Alta_stagione";
 

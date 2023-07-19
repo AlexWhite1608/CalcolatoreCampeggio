@@ -356,20 +356,20 @@ public class MenuCampeggio extends JPanel {
 
                 // Accede ai prezzi e assegna alle variabili corrispondenti
                 Double[] prezziCamper = prezzi.get(indexCamper);
-                double prezzoCamperAs = prezziCamper[0];
-                double prezzoCamperBs = prezziCamper[1];
+                double prezzoCamperAs = prezziCamper[1];
+                double prezzoCamperBs = prezziCamper[0];
 
                 Double[] prezziTenda = prezzi.get(indexTenda);
-                double prezzoTendaAs = prezziTenda[0];
-                double prezzoTendaBs = prezziTenda[1];
+                double prezzoTendaAs = prezziTenda[1];
+                double prezzoTendaBs = prezziTenda[0];
 
                 Double[] prezziAdulto = prezzi.get(indexAdulto);
-                double prezzoAdultoAs = prezziAdulto[0];
-                double prezzoAdultoBs = prezziAdulto[1];
+                double prezzoAdultoAs = prezziAdulto[1];
+                double prezzoAdultoBs = prezziAdulto[0];
 
                 Double[] prezziBambino = prezzi.get(indexBambino);
-                double prezzoBambinoAs = prezziBambino[0];
-                double prezzoBambinoBs = prezziBambino[1];
+                double prezzoBambinoAs = prezziBambino[1];
+                double prezzoBambinoBs = prezziBambino[0];
 
                 double prezzoAnimale = prezzi.get(indexAnimale)[0];
                 double taxSoggiorno = prezzi.get(indexTaxSoggiorno)[0];
