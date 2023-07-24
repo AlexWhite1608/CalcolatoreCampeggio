@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import data_access.PrezzarioGateway;
 import utils.Screenshot;
 import utils.Stagione;
+import utils.TextFieldsController;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -86,29 +87,11 @@ public class MenuCampeggio extends JPanel {
 
     // Setup textField
     private void setupTextFields() {
-
-        // Permette solo numeri interi
-        DocumentFilter numberFilter = new DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                if (string.matches("\\d+")) {
-                    super.insertString(fb, offset, string, attr);
-                }
-            }
-
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                if (text.matches("\\d+")) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
-            }
-        };
-
-        ((AbstractDocument) tfNumAdulti.getDocument()).setDocumentFilter(numberFilter);
-        ((AbstractDocument) tfNoTax.getDocument()).setDocumentFilter(numberFilter);
-        ((AbstractDocument) tfNumBambini.getDocument()).setDocumentFilter(numberFilter);
-        ((AbstractDocument) tfNumAnimali.getDocument()).setDocumentFilter(numberFilter);
-        ((AbstractDocument) tfExtra.getDocument()).setDocumentFilter(numberFilter);
+        TextFieldsController.setupTextFieldsFloat(tfExtra);
+        TextFieldsController.setupTextFieldsInteger(tfNumAdulti);
+        TextFieldsController.setupTextFieldsInteger(tfNoTax);
+        TextFieldsController.setupTextFieldsInteger(tfNumBambini);
+        TextFieldsController.setupTextFieldsInteger(tfNumAnimali);
     }
 
     // Codice per cancellare tutto il form
@@ -148,6 +131,9 @@ public class MenuCampeggio extends JPanel {
                 labelCalcoloTotaleTassa.setText("");
                 labelCalcoloTassaSoggiorno.setText("");
                 tfTotale.setText("");
+
+                // Reimposta vincoli sulle textfields
+                setupTextFields();
             }
         });
     }
@@ -419,15 +405,15 @@ public class MenuCampeggio extends JPanel {
                         totaleCampeggioConTassa = ((numAdulti * taxSoggiorno) - (noTax * taxSoggiorno)) * 4;
 
                     // Calcolo eventuale extra
-                    int extra = 0;
+                    float extra = 0;
                     if(!Objects.equals(tfExtra.getText(), ""))
-                        extra = Integer.parseInt(tfExtra.getText());
+                        extra = Float.parseFloat(tfExtra.getText());
 
                     // Imposta i vari totale
                     labelCalcoloTotaleCampeggio.setText("€ " + Double.toString(totaleCampeggio));
                     labelCalcoloTassaSoggiorno.setText("€ " + Double.toString(totaleCampeggioConTassa));
                     labelCalcoloTotaleTassa.setText("€ " + Double.toString(totaleCampeggio + totaleCampeggioConTassa));
-                    tfTotale.setText("€ " + Double.toString(totaleCampeggio + totaleCampeggioConTassa + extra));
+                    tfTotale.setText("€ " + Float.toString((float) (totaleCampeggio + totaleCampeggioConTassa + extra)));
 
                 // Se non sono selezionati camper o tenda
                 } else {
