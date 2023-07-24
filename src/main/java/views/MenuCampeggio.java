@@ -8,8 +8,6 @@ import utils.TextFieldsController;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,6 +59,8 @@ public class MenuCampeggio extends JPanel {
     private JPanel pnToolBar;
     private JToolBar toolBar;
     private JButton btnSconto;
+    private JLabel lblAAcconto;
+    private JTextField tfAcconto;
 
     public MenuCampeggio() {
         // Setup textField (solo interi)
@@ -92,6 +92,7 @@ public class MenuCampeggio extends JPanel {
         TextFieldsController.setupTextFieldsInteger(tfNoTax);
         TextFieldsController.setupTextFieldsInteger(tfNumBambini);
         TextFieldsController.setupTextFieldsInteger(tfNumAnimali);
+        TextFieldsController.setupTextFieldsFloat(tfAcconto);
     }
 
     // Codice per cancellare tutto il form
@@ -112,6 +113,7 @@ public class MenuCampeggio extends JPanel {
                 tfNumAnimali.setText("");
                 tfExtra.setText("");
                 tfNoTax.setText("");
+                tfAcconto.setText("");
                 rbCamper.setSelected(false);
                 rbTenda.setSelected(false);
 
@@ -409,11 +411,16 @@ public class MenuCampeggio extends JPanel {
                     if(!Objects.equals(tfExtra.getText(), ""))
                         extra = Float.parseFloat(tfExtra.getText());
 
+                    // Calcolo eventuale acconto
+                    float acconto = 0;
+                    if(!Objects.equals(tfAcconto.getText(), ""))
+                        acconto = Float.parseFloat(tfAcconto.getText());
+
                     // Imposta i vari totale
                     labelCalcoloTotaleCampeggio.setText("€ " + Double.toString(totaleCampeggio));
                     labelCalcoloTassaSoggiorno.setText("€ " + Double.toString(totaleCampeggioConTassa));
                     labelCalcoloTotaleTassa.setText("€ " + Double.toString(totaleCampeggio + totaleCampeggioConTassa));
-                    tfTotale.setText("€ " + Float.toString((float) (totaleCampeggio + totaleCampeggioConTassa + extra)));
+                    tfTotale.setText("€ " + Float.toString((float) (totaleCampeggio + totaleCampeggioConTassa + extra - acconto)));
 
                 // Se non sono selezionati camper o tenda
                 } else {
